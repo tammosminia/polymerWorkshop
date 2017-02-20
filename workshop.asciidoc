@@ -1,0 +1,13 @@
+npm install -g polymer-cli
+
+mkdir j-weather
+cd j-weather
+polymer init
+
+Our element is in j-weather.html
+
+run it with polymer serve
+This shows the properties in an iron page view.
+click on demo. This demonstrates the element. See demo/index.html
+
+

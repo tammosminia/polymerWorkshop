@@ -1,0 +1,34 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`j-weather`
+polymer workshop
+
+@demo demo/index.html 
+-->
+
+<dom-module id="j-weather">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]</h2>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'j-weather',
+
+      properties: {
+        prop1: {
+          type: String,
+          value: 'j-weather',
+        },
+      },
+
+    });
+  </script>
+</dom-module>
