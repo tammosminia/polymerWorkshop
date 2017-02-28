@@ -11,3 +11,4 @@ This shows the properties in an iron page view.
 click on demo. This demonstrates the element. See demo/index.html
 
 
+bower install --save PolymerElements/iron-input

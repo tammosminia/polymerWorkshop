@@ -1,4 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-input/iron-input.html">
+<link rel="import" href="../iron-validatable-behavior/iron-validatable-behavior.html">
+<link rel="import" href="location-validator.html">
 
 <!--
 `j-weather`
@@ -15,6 +18,10 @@ polymer workshop
       }
     </style>
     <h2>Hello [[prop1]]</h2>
+
+    <location-validator id="validator1" validator-name="validator1"></location-validator>
+    <input auto-validate is="iron-input" validator="validator1" bind-value="{{newLocation}}">
+    <button on-tap="addLocation">add</button>
   </template>
 
   <script>
@@ -22,11 +29,28 @@ polymer workshop
 
       is: 'j-weather',
 
+      behaviors: [
+        Polymer.IronValidatableBehavior
+      ],
+
       properties: {
         prop1: {
           type: String,
           value: 'j-weather',
         },
+
+        newLocation: String,
+
+        locations: {
+          type: Array,
+          value: function() { return [] }
+        }
+      },
+
+      addLocation: function() {
+        console.log("adding " + this.newLocation);
+        this.locations.push(this.newLocation);
+        this.newLocation = "";
       },
 
     });
