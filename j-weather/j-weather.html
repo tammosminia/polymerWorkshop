@@ -2,6 +2,7 @@
 <link rel="import" href="../iron-input/iron-input.html">
 <link rel="import" href="../iron-validatable-behavior/iron-validatable-behavior.html">
 <link rel="import" href="location-validator.html">
+<link rel="import" href="weather-for-city.html">
 
 <!--
 `j-weather`
@@ -11,48 +12,70 @@ polymer workshop
 -->
 
 <dom-module id="j-weather">
-  <template>
-    <style>
-      :host {
-        display: block;
-      }
-    </style>
-    <h2>Hello [[prop1]]</h2>
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+        <h2>Hello [[prop1]]</h2>
 
-    <location-validator id="validator1" validator-name="validator1"></location-validator>
-    <input auto-validate is="iron-input" validator="validator1" bind-value="{{newLocation}}">
-    <button on-tap="addLocation">add</button>
-  </template>
+        <form>
+            <location-validator id="validator1" validator-name="validator1"></location-validator>
+            <input auto-validate is="iron-input" required bind-value="{{newLocation}}">
+            <button on-tap="addLocation">add</button>
+        </form>
 
-  <script>
-    Polymer({
+        <h3>Interesting locations</h3>
+        <ul>
+            <template is="dom-repeat" items="[[locations]]" index-as="index">
+                <li>
+                    <weather-for-city city="[[item]]"></weather-for-city>
+                    <button on-tap="removeLocation" data-args="[[index]]">remove</button>
+                </li>
+            </template>
+        </ul>
+    </template>
 
-      is: 'j-weather',
+    <script>
+        Polymer({
 
-      behaviors: [
-        Polymer.IronValidatableBehavior
-      ],
+            is: 'j-weather',
 
-      properties: {
-        prop1: {
-          type: String,
-          value: 'j-weather',
-        },
+            behaviors: [
+                Polymer.IronValidatableBehavior
+            ],
 
-        newLocation: String,
+            properties: {
+                prop1: {
+                    type: String,
+                    value: 'j-weather',
+                },
 
-        locations: {
-          type: Array,
-          value: function() { return [] }
-        }
-      },
+                newLocation: String,
 
-      addLocation: function() {
-        console.log("adding " + this.newLocation);
-        this.locations.push(this.newLocation);
-        this.newLocation = "";
-      },
+                locations: {
+                    type: Array,
+                    value: function () {
+                        return ["Amsterdam"]
+                    }
+                }
+            },
 
-    });
-  </script>
+            addLocation: function () {
+                console.log("adding " + this.newLocation);
+                this.push("locations", this.newLocation); //use the Polymer push function, otherwise databinding won't be noticed
+                this.newLocation = "";
+                console.log(this.locations);
+            },
+
+            removeLocation: function(event) {
+                var index = event.target.dataArgs;
+                console.log("removind index " + index);
+                this.splice('locations', index, 1);
+            }
+
+
+        });
+    </script>
 </dom-module>

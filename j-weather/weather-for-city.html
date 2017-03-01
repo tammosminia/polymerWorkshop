@@ -1,0 +1,47 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+
+<dom-module id="weather-for-city">
+    <template>
+        <iron-ajax id="getWeather" auto
+                   url="http://api.openweathermap.org/data/2.5/weather"
+                   params='[[_getParams(city)]]'
+                   handle-as="json"
+                   on-response="_handleResponse"></iron-ajax>
+
+        [[city]]: [[_icon]] [[_description]] [[_degrees]]K
+    </template>
+
+    <script>
+        Polymer({
+            is: 'weather-for-city',
+
+            properties: {
+                city: String,
+            },
+
+//            ready: function() {
+//                this.$.getWeather.generateRequest();
+//            },
+
+            _getParams: function() {
+                return {
+                    q: this.city,
+                    appid: "7b9958902d19dac99dd75f203b4275e0"
+                };
+            },
+
+            _handleResponse: function(event) {
+                console.log(event);
+                var response = event.detail.response;
+                console.log("got weather response : " + response + " for " + response.name);
+                this._description = response.weather[0].description;
+                this._icon = response.weather[0].icon;
+                this._degrees = response.main.temp;
+
+            }
+
+        });
+
+    </script>
+</dom-module>
