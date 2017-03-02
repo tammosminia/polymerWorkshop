@@ -1,6 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-input/iron-input.html">
 <link rel="import" href="../iron-validatable-behavior/iron-validatable-behavior.html">
+<link rel="import" href="../paper-toast/paper-toast.html">
 <link rel="import" href="location-validator.html">
 <link rel="import" href="weather-for-city.html">
 
@@ -18,7 +19,7 @@ polymer workshop
                 display: block;
             }
         </style>
-        <h2>Hello [[prop1]]</h2>
+        <h2>J-weather</h2>
 
         <form>
             <location-validator id="validator1" validator-name="validator1"></location-validator>
@@ -30,16 +31,16 @@ polymer workshop
         <ul>
             <template is="dom-repeat" items="[[locations]]" index-as="index">
                 <li>
-                    <weather-for-city city="[[item]]"></weather-for-city>
-                    <button on-tap="removeLocation" data-args="[[index]]">remove</button>
+                    <weather-for-city city="[[item]]" on-remove="removeLocation"></weather-for-city>
                 </li>
             </template>
         </ul>
+
+        <paper-toast id="toast" text="location removed"></paper-toast>
     </template>
 
     <script>
         Polymer({
-
             is: 'j-weather',
 
             behaviors: [
@@ -47,11 +48,6 @@ polymer workshop
             ],
 
             properties: {
-                prop1: {
-                    type: String,
-                    value: 'j-weather',
-                },
-
                 newLocation: String,
 
                 locations: {
@@ -70,9 +66,13 @@ polymer workshop
             },
 
             removeLocation: function(event) {
-                var index = event.target.dataArgs;
+                var location = event.detail;
+                console.log("got remove event for " + location);
+                var index = this.locations.indexOf(location);
                 console.log("removind index " + index);
                 this.splice('locations', index, 1);
+                this.$.toast.text = location + " removed";
+                this.$.toast.open();
             }
 
 

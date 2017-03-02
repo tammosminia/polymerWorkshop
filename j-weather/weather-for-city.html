@@ -14,6 +14,7 @@ This gets the weather data for one city using an ajax call and shows it.
                    on-response="_handleResponse"></iron-ajax>
 
         [[city]]: [[_icon]] [[_description]] [[_degrees]]K
+        <button on-tap="remove">remove</button>
     </template>
 
     <script>
@@ -42,7 +43,10 @@ This gets the weather data for one city using an ajax call and shows it.
                 this._description = response.weather[0].description;
                 this._icon = response.weather[0].icon;
                 this._degrees = response.main.temp;
+            },
 
+            remove: function() {
+                this.fire("remove", this.city);
             }
 
         });
