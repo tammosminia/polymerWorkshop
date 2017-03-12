@@ -13,7 +13,7 @@ This gets the weather data for one city using an ajax call and shows it.
                    handle-as="json"
                    on-response="_handleResponse"></iron-ajax>
 
-        [[city]]: [[_icon]] [[_description]] [[_degrees]]K
+        [[city]]: <img src="[[_iconUrl]]" width="40px" style="margin-bottom: -15px;"/> [[_description]] [[_degrees]]&deg;C
         <button on-tap="remove">remove</button>
     </template>
 
@@ -32,7 +32,8 @@ This gets the weather data for one city using an ajax call and shows it.
             _getParams: function() {
                 return {
                     q: this.city,
-                    appid: "7b9958902d19dac99dd75f203b4275e0"
+                    appid: "7b9958902d19dac99dd75f203b4275e0",
+                    units:"metric"
                 };
             },
 
@@ -41,7 +42,7 @@ This gets the weather data for one city using an ajax call and shows it.
                 var response = event.detail.response;
                 console.log("got weather response : " + response + " for " + response.name);
                 this._description = response.weather[0].description;
-                this._icon = response.weather[0].icon;
+                this._iconUrl = "http://openweathermap.org/img/w/"+response.weather[0].icon+".png";
                 this._degrees = response.main.temp;
             },
 

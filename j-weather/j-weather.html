@@ -1,6 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-input/iron-input.html">
-<link rel="import" href="../iron-validatable-behavior/iron-validatable-behavior.html">
 <link rel="import" href="../paper-toast/paper-toast.html">
 <link rel="import" href="location-validator.html">
 <link rel="import" href="weather-for-city.html">
@@ -13,69 +12,64 @@ polymer workshop
 -->
 
 <dom-module id="j-weather">
-    <template>
-        <style>
-            :host {
-                display: block;
-            }
-        </style>
-        <h2>J-weather</h2>
+<template>
+<style>
+:host {
+	display: block;
+}
+</style>
+<h2>J-weather</h2>
 
-        <form>
-            <location-validator id="validator1" validator-name="validator1"></location-validator>
-            <input auto-validate is="iron-input" required bind-value="{{newLocation}}">
-            <button on-tap="addLocation">add</button>
-        </form>
+<form id="form" is="iron-form" on-submit="addLocation">
+	<input is="iron-input" name="location" required autofocus
+	bind-value="{{newLocation}}" autocomplete="off">
+	<button id="submit" type="submit">add</button>
+</form>
 
-        <h3>Interesting locations</h3>
-        <ul>
-            <template is="dom-repeat" items="[[locations]]" index-as="index">
-                <li>
-                    <weather-for-city city="[[item]]" on-remove="removeLocation"></weather-for-city>
-                </li>
-            </template>
-        </ul>
+<h3>Interesting locations</h3>
+<ul>
+	<template is="dom-repeat" items="[[locations]]" index-as="index">
+	<li>
+		<weather-for-city city="[[item]]" on-remove="removeLocation"></weather-for-city>
+	</li>
+	</template>
+</ul>
 
-        <paper-toast id="toast" text="location removed"></paper-toast>
-    </template>
+<paper-toast id="toast" text="location removed"></paper-toast>
+</template>
+<script>
+	Polymer({
+		is : 'j-weather',
 
-    <script>
-        Polymer({
-            is: 'j-weather',
+		properties : {
+			newLocation : String,
 
-            behaviors: [
-                Polymer.IronValidatableBehavior
-            ],
+			locations : {
+				type : Array,
+				value : function() {
+					return [ "Amsterdam" ]
+				}
+			}
+		},
+		
+		addLocation: function (e) {
+			e.preventDefault();
+		    console.log("adding " + this.newLocation);
+		    this.push("locations", this.newLocation); //use the Polymer push function, otherwise databinding won't be noticed
+		    this.newLocation = "";
+		    console.log(this.locations);
+		},
 
-            properties: {
-                newLocation: String,
+		removeLocation : function(event) {
+			var location = event.detail;
+			console.log("got remove event for " + location);
+			var index = this.locations.indexOf(location);
+			console.log("removind index " + index);
+			this.splice('locations', index, 1);
+			this.$.toast.text = location + " removed";
+			this.$.toast.open();
+		}
 
-                locations: {
-                    type: Array,
-                    value: function () {
-                        return ["Amsterdam"]
-                    }
-                }
-            },
-
-            addLocation: function () {
-                console.log("adding " + this.newLocation);
-                this.push("locations", this.newLocation); //use the Polymer push function, otherwise databinding won't be noticed
-                this.newLocation = "";
-                console.log(this.locations);
-            },
-
-            removeLocation: function(event) {
-                var location = event.detail;
-                console.log("got remove event for " + location);
-                var index = this.locations.indexOf(location);
-                console.log("removind index " + index);
-                this.splice('locations', index, 1);
-                this.$.toast.text = location + " removed";
-                this.$.toast.open();
-            }
-
-
-        });
-    </script>
+	});
+</script>
 </dom-module>

@@ -45,3 +45,6 @@ fabric.properties
 
 /j-weather/bower_components/
 /j-weather/npm-debug.log
+/.project
+/node_modules/*
+npm-debug.log
