@@ -1,14 +1,66 @@
-npm install -g polymer-cli
+= Workshop Polymer
 
+== Installation
+Install https://nodejs.org/en/[nodejs].
+Then install polymer using npm:
+....
+npm install -g polymer-cli
+....
+
+== Create an application
+Create the application using these commands:
+....
 mkdir j-weather
 cd j-weather
 polymer init
-
+....
 Our element is in j-weather.html
 
-run it with polymer serve
+Run it with:
+....
+polymer serve
+....
 This shows the properties in an iron page view.
-click on demo. This demonstrates the element. See demo/index.html
+Click on demo. This demonstrates the element. See demo/index.html
+
+== Create an input field
+Create an input field using https://www.webcomponents.org/element/PolymerElements/iron-input[iron-input].
+Now make a property "newLocation" and bind it to this input field using two way databinding.
+To try it out you can show it later in the page using:
+....
+<p>[[newLocation]]</p>
+....
+
+== Make an add button that adds this location to a list of interesting locations
+Add a property "locations" of type Array to your element.
+Make a button and listen to the on-tap event.
+There add the new location to the locations array. (be sure to use the Polymer push method)
+Display the location in a list. (use dom-repeat)
+
+== Subcomponent
+Create a subcomponent to show the weather for one city. (weather-for-city)
+For now we'll just show the city name and a static temperature.
+Use this component in the interesting locations list.
+
+== Use real weather
+We'll use openweathermap.org
+You can make a query like this: http://openweathermap.org/data/2.5/weather?q=Nieuwegein&appid=7b9958902d19dac99dd75f203b4275e0
+This appid is for an account I made. It can only handle some amount of calls/time, so you may need to make your own account.
+
+Use iron-ajax to make the api call.
+You'll need to make a method *_getParams(city)* to supply the url parameters.
+
+Make a response handler where you parse the json response.
+Make some properties on the element (like description, temperature, icon) and fill them.
+Show them on the screen.
+
+== Delete locations
+Make a delete button inside the weather-for-city element.
+When you push it, throw a "remove" event with the city name as data.
+Catch the event in the j-weather component.
+Remove the city from the list.
+Use a paper-toast element to notify the user.
 
 
-bower install --save PolymerElements/iron-input
+
+
