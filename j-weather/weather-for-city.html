@@ -1,5 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="shared-styles.html">
 
 <!--
 This gets the weather data for one city using an ajax call and shows it.
@@ -7,15 +8,45 @@ This gets the weather data for one city using an ajax call and shows it.
 
 <dom-module id="weather-for-city">
     <template>
+    	<style include="shared-styles">
+    		:host {
+    			font-size: 0.9rem;
+    		}
+    		button {
+   			    font-size: 0.9rem;
+   			    height: 1.0rem;
+    		}
+    		
+    		.table {
+    			display: table;
+    			margin-top: 0.4rem;
+    		}
+    		.cell {
+    			display: table-cell;
+    			vertical-align: top;
+    		}
+    		.cell.image {
+    			padding-right: 2px;
+    		}
+    	</style>
         <iron-ajax id="getWeather" auto
                    url="http://api.openweathermap.org/data/2.5/weather"
                    params='[[_getParams(city)]]'
                    handle-as="json"
                    on-response="_handleResponse"
                    on-error="_handleError"></iron-ajax>
-
-        Found [[_name]]  for search "[[city]]": <img src="[[_iconUrl]]" width="40px" style="margin-bottom: -15px;"/> [[_description]] [[_degrees]]&deg;C
-        <button on-tap="remove">remove</button>
+		<div class="table">
+			<div class="cell image">
+				<img src="[[_iconUrl]]" width="40px"/>
+			</div>
+			<div class="cell">
+				Found [[_name]]  for search "[[city]]":
+				<div>
+					It's [[_degrees]]&deg;C with [[_description]]
+					<button on-tap="remove">Remove</button>
+				</div>
+			</div>
+        </div>
     </template>
 
     <script>
