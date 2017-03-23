@@ -11,9 +11,10 @@ This gets the weather data for one city using an ajax call and shows it.
                    url="http://api.openweathermap.org/data/2.5/weather"
                    params='[[_getParams(city)]]'
                    handle-as="json"
-                   on-response="_handleResponse"></iron-ajax>
+                   on-response="_handleResponse"
+                   on-error="_handleError"></iron-ajax>
 
-        [[city]]: <img src="[[_iconUrl]]" width="40px" style="margin-bottom: -15px;"/> [[_description]] [[_degrees]]&deg;C
+        Found [[_name]]  for search "[[city]]": <img src="[[_iconUrl]]" width="40px" style="margin-bottom: -15px;"/> [[_description]] [[_degrees]]&deg;C
         <button on-tap="remove">remove</button>
     </template>
 
@@ -38,12 +39,17 @@ This gets the weather data for one city using an ajax call and shows it.
             },
 
             _handleResponse: function(event) {
-                console.log(event);
-                var response = event.detail.response;
+               	var response = event.detail.response;
                 console.log("got weather response : " + response + " for " + response.name);
+                this._name = response.name;
                 this._description = response.weather[0].description;
                 this._iconUrl = "http://openweathermap.org/img/w/"+response.weather[0].icon+".png";
                 this._degrees = response.main.temp;
+            },
+            
+            _handleError: function(event) {
+            	console.log(event);
+            	this.fire("notfound", this.city);
             },
 
             remove: function() {

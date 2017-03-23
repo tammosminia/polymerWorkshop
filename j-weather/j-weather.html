@@ -21,16 +21,19 @@ polymer workshop
 <h2>J-weather</h2>
 
 <form id="form" is="iron-form" on-submit="addLocation">
-	<input is="iron-input" name="location" required autofocus
-	bind-value="{{newLocation}}" autocomplete="off">
-	<button id="submit" type="submit">add</button>
+	<div>
+		<input is="iron-input" name="location" required autofocus
+		bind-value="{{newLocation}}" autocomplete="off">
+		<button id="submit" type="submit">add</button>
+	</div>
+	<div hidden$="{{_iscityfound}}">Could not find city: "[[_city]]"</div>
 </form>
 
 <h3>Interesting locations</h3>
 <ul>
 	<template is="dom-repeat" items="[[locations]]" index-as="index">
 	<li>
-		<weather-for-city city="[[item]]" on-remove="removeLocation"></weather-for-city>
+		<weather-for-city city="[[item]]" on-notfound="notFound" on-remove="removeLocation"></weather-for-city>
 	</li>
 	</template>
 </ul>
@@ -49,11 +52,17 @@ polymer workshop
 				value : function() {
 					return [ "Amsterdam" ]
 				}
-			}
+			},
+			
+			_iscityfound: {
+                type: Boolean,
+                value: true
+            }
 		},
 		
 		addLocation: function (e) {
 			e.preventDefault();
+			this._iscityfound = true;
 		    console.log("adding " + this.newLocation);
 		    this.push("locations", this.newLocation); //use the Polymer push function, otherwise databinding won't be noticed
 		    this.newLocation = "";
@@ -61,13 +70,25 @@ polymer workshop
 		},
 
 		removeLocation : function(event) {
+			var location = this._removeLocation(event);
+			this.$.toast.text = location + " removed";
+			this.$.toast.open();
+		},
+		
+		_removeLocation: function(event) {
 			var location = event.detail;
 			console.log("got remove event for " + location);
 			var index = this.locations.indexOf(location);
-			console.log("removind index " + index);
+			console.log("removing index " + index);
 			this.splice('locations', index, 1);
-			this.$.toast.text = location + " removed";
-			this.$.toast.open();
+			return location;
+		},
+		
+		notFound: function(event) {
+			console.log("not found");
+			this._removeLocation(event);
+			this._city = event.detail;
+			this._iscityfound = false;
 		}
 
 	});
