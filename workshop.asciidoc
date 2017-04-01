@@ -61,6 +61,17 @@ Catch the event in the j-weather component.
 Remove the city from the list.
 Use a paper-toast element to notify the user.
 
+== Error handling
+Show a message near the input field when the city is not found
+
+== Styling
+Now the button styling is duplicate in the files. Extract this and find a way to share a piece of styling.
+
+== Testing
 
 
+== Bonus 1: Replace the iron-input with paper-input
+The advantage of paper-inputs is that there is a whole api to it. For example the ability to create validations is a lot easier compared to iron-input.
 
+== bonus 2: Add required validation on the input field
+Now that the input is a paper-input add required validation to it.
