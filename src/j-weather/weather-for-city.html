@@ -1,5 +1,5 @@
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import"  href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="shared-styles.html">
 
 <!--
@@ -50,44 +50,49 @@ This gets the weather data for one city using an ajax call and shows it.
     </template>
 
     <script>
-        Polymer({
-            is: 'weather-for-city',
+        class WeatherForCity extends Polymer.Element {
+      static get is() { return "weather-for-city"; }
 
-            properties: {
-                city: String,
-            },
 
-//            ready: function() {
-//                this.$.getWeather.generateRequest();
-//            },
+static get properties() {
+        return {
+          city: {
+            type: String
+          }
+      }
+}
+      
 
-            _getParams: function() {
+        _getParams() {
                 return {
                     q: this.city,
                     appid: "7b9958902d19dac99dd75f203b4275e0",
                     units:"metric"
                 };
-            },
+            };
 
-            _handleResponse: function(event) {
+            _handleResponse(event) {
                	var response = event.detail.response;
                 console.log("got weather response : " + response + " for " + response.name);
                 this._name = response.name;
                 this._description = response.weather[0].description;
                 this._iconUrl = "http://openweathermap.org/img/w/"+response.weather[0].icon+".png";
                 this._degrees = response.main.temp;
-            },
+            };
             
-            _handleError: function(event) {
+            _handleError(event) {
             	console.log(event);
             	this.fire("notfound", this.city);
-            },
+            };
 
-            remove: function() {
+            remove() {
                 this.fire("remove", this.city);
-            }
+            };
 
-        });
 
+
+
+        };
+    customElements.define(WeatherForCity.is, WeatherForCity);
     </script>
 </dom-module>

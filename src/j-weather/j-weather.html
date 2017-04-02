@@ -1,19 +1,11 @@
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../iron-input/iron-input.html">
-<link rel="import" href="../paper-toast/paper-toast.html">
-<link rel="import" href="location-validator.html">
+<link rel="import"  href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-input/iron-input.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="weather-for-city.html">
-<link rel="import" href="shared-styles.html">
-
-<!--
-`j-weather`
-polymer workshop
-
-@demo demo/index.html 
--->
 
 <dom-module id="j-weather">
-<template>
+
+  <template>
 <style include="shared-styles">
 :host {
 	display: block;
@@ -49,79 +41,94 @@ ul {
 	padding-left: 0;
 }
 </style>
-<h2>J-weather</h2>
 
-<form id="form" is="iron-form" on-submit="addLocation">
+    <!-- bind to the "owner" property -->
+<h2>J-weather</h2>
+<form id="form" on-submit="addLocation">
 	<div>
-		<input is="iron-input" name="location" required autofocus
-		bind-value="{{newLocation}}" autocomplete="off">
+                <iron-input bind-value="{{newLocation}}">
+		  <input is="iron-input" name="location" required autofocus
+		    autocomplete="off">
+                </iron-input>
 		<button id="submit" type="submit">Add</button>
 	</div>
-	<div class="validationError" hidden$="{{_iscityfound}}">Could not find city: "[[_city]]"</div>
+	<div class="validationError" hidden="{{_iscityfound}}">Could not find city: "[[_city]]"</div>
 </form>
 
 <h3>Interesting locations</h3>
 <ul>
+	<dom-repeat>
 	<template is="dom-repeat" items="[[locations]]" index-as="index">
 	<li>
 		<weather-for-city city="[[item]]" on-notfound="notFound" on-remove="removeLocation"></weather-for-city>
 	</li>
 	</template>
+	</dom-repeat>
 </ul>
 
 <paper-toast id="toast" text="location removed"></paper-toast>
-</template>
-<script>
-	Polymer({
-		is : 'j-weather',
+  </template>
 
-		properties : {
-			newLocation : String,
+  <script>
+    class JWeather extends Polymer.Element {
+      static get is() { return "j-weather"; }
+      
+      // configure the owner property
+      static get properties() {
+        return {
+          newLocation: {
+            type: String
+          },
 
-			locations : {
-				type : Array,
-				value : function() {
-					return [ "Amsterdam" ]
-				}
-			},
+	locations : {
+		type : Array,
+		value : function() {
+			return [ "Amsterdam" ]
+		}
+	},
 			
-			_iscityfound: {
+	_iscityfound: {
                 type: Boolean,
                 value: true
             }
-		},
-		
-		addLocation: function (e) {
+        };
+      }
+      
+      
+      addLocation(e) {
 			e.preventDefault();
 			this._iscityfound = true;
 		    console.log("adding " + this.newLocation);
 		    this.push("locations", this.newLocation); //use the Polymer push function, otherwise databinding won't be noticed
 		    this.newLocation = "";
 		    console.log(this.locations);
-		},
+		};
 
-		removeLocation : function(event) {
+		removeLocation(event) {
 			var location = this._removeLocation(event);
 			this.$.toast.text = location + " removed";
 			this.$.toast.open();
-		},
+		};
 		
-		_removeLocation: function(event) {
+		_removeLocation(event) {
 			var location = event.detail;
 			console.log("got remove event for " + location);
 			var index = this.locations.indexOf(location);
 			console.log("removing index " + index);
 			this.splice('locations', index, 1);
 			return location;
-		},
+		};
 		
-		notFound: function(event) {
+		notFound(event) {
 			console.log("not found");
 			this._removeLocation(event);
 			this._city = event.detail;
 			this._iscityfound = false;
-		}
+		};
+      
+            
+    };
+    customElements.define(JWeather.is, JWeather);
+  </script>
 
-	});
-</script>
 </dom-module>
