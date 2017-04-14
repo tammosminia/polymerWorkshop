@@ -50,20 +50,19 @@ This gets the weather data for one city using an ajax call and shows it.
     </template>
 
     <script>
-        class WeatherForCity extends Polymer.Element {
-      static get is() { return "weather-for-city"; }
-
-
-static get properties() {
-        return {
-          city: {
-            type: String
-          }
-      }
-}
+		class WeatherForCity extends Polymer.Element {
+			static get is() { return "weather-for-city"; }
+			
+			static get properties() {
+			        return {
+			          city: {
+			            type: String
+			          }
+			      }
+			}
       
 
-        _getParams() {
+        	_getParams() {
                 return {
                     q: this.city,
                     appid: "7b9958902d19dac99dd75f203b4275e0",
@@ -82,17 +81,13 @@ static get properties() {
             
             _handleError(event) {
             	console.log(event);
-            	this.fire("notfound", this.city);
+            	this.dispatchEvent(new CustomEvent('notfound', {detail: this.city, bubbles: true, composed: true}));
             };
 
             remove() {
-                this.fire("remove", this.city);
+            	this.dispatchEvent(new CustomEvent('remove', {detail: this.city, bubbles: true, composed: true}));
             };
-
-
-
-
         };
-    customElements.define(WeatherForCity.is, WeatherForCity);
+    	customElements.define(WeatherForCity.is, WeatherForCity);
     </script>
 </dom-module>
