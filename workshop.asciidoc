@@ -56,7 +56,7 @@ Show them on the screen.
 
 == Delete locations
 Make a delete button inside the weather-for-city element.
-When you push it, throw a "remove" event with the city name as data.
+When you push it, dispatch a custom "remove" event with the city name as data.
 Catch the event in the j-weather component.
 Remove the city from the list.
 Use a paper-toast element to notify the user.
