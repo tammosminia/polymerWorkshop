@@ -1,5 +1,5 @@
 <link rel="import"  href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../bower_components/iron-input/iron-input.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="weather-for-city.html">
 
@@ -12,14 +12,9 @@
 	font-size: 1.4rem;
 }
 
-input {
-	background-color: #ededed;
-    border: 1px solid #b2b2b2;
-    padding: 1px 4px;
-    border-radius: 2px;
-    color: #3c3c3b;
-    font-size: 1.2rem;
-    height: 2rem;
+paper-input {
+	width: 250px;
+	margin-bottom: 15px;
 }
 
 h2, h3, ul {
@@ -44,13 +39,10 @@ ul {
 
     <!-- bind to the "owner" property -->
 <h2>J-weather</h2>
-<form id="form" on-submit="addLocation">
+<form on-submit="addLocation">
 	<div>
-                <iron-input bind-value="{{newLocation}}">
-		  <input is="iron-input" name="location" required autofocus
-		    autocomplete="off">
-                </iron-input>
-		<button id="submit" type="submit">Add</button>
+        <paper-input id="location" value="{{newLocation}}" label="Location" name="location" required error-message="Please fill in a location" autofocus autocomplete="off"></paper-input>
+		<button id="addButton" type="submit">Add</button>
 	</div>
 	<div class="validationError" hidden="{{_iscityfound}}">Could not find city: "[[_city]]"</div>
 </form>
@@ -65,7 +57,7 @@ ul {
 	</template>
 	</dom-repeat>
 </ul>
-<paper-toast verticalAlign="top" id="toast" duration="2000" text"location removed"></paper-toast>
+<paper-toast verticalAlign="top" id="toast" duration="2000" text="location removed"></paper-toast>
   </template>
 
   <script>  
@@ -95,11 +87,14 @@ ul {
 	      
 		addLocation(e) {
 			e.preventDefault();
-			this._iscityfound = true;
-		    console.log("adding " + this.newLocation);
-		    this.push("locations", this.newLocation); //use the Polymer push function, otherwise databinding won't be noticed
-		    this.newLocation = "";
-		    console.log(this.locations);
+			var locationinput = this.$.location;
+			if(locationinput.validate()) {
+				this._iscityfound = true;
+			    console.log("adding " + this.newLocation);
+			    this.push("locations", this.newLocation); //use the Polymer push function, otherwise databinding won't be noticed
+			    this.newLocation = "";
+			    console.log(this.locations);
+			}
 		};
 
 		removeLocation(event) {
