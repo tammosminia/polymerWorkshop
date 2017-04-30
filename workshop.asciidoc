@@ -1,35 +1,167 @@
 = Workshop Polymer
 
 == Installation
+=== Node
+==== For Linux
+
+For Linux: Install Node Version Manager (https://github.com/creationix/nvm)
+----
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+----
+Don't forget to close and open your terminal.
+
+Install Node
+----
+nvm install node
+----
+==== For Windows
 Install https://nodejs.org/en/[nodejs].
+
+==== NPM (if not using Node Version Manager)
+Install NPM
+----
+sudo apt install npm
+----
+=== GIT (if not already installed)
+----
+sudo apt-get install git
+----
+
+== Bower
+----
+npm install -g bower
+----
+
+=== Polymer
 Then install polymer using npm:
-....
-npm install -g polymer-cli
-....
+----
+npm install -g polymer-cli@next
+----
 
-== Create an application
+== Create a basic application
 Create the application using these commands:
-....
-mkdir j-weather
-cd j-weather
+----
+mkdir polymerWorkshop
+cd polymerWorkshop
 polymer init
-....
-Our element is in j-weather.html
+----
+Choose for "polymer-2-starter-kit" using arrow down and "enter" to choose.
 
-Run it with:
-....
+Run the default application in the starter kit with:
+----
 polymer serve
-....
-This shows the properties in an iron page view.
-Click on demo. This demonstrates the element. See demo/index.html
+----
+This shows the example application in an iron page view when you navigate to http://127.0.0.1:8081/components/polymer-starter-kit/
+
+While developing we recommend using Chrome because of the best Web Components support.
+
+== Create a j-weather component
+Create a directory "j-weather" inside _polymerWorkshop/src_
+
+=== j-weather component
+Create a component file named "j-weather.html" and put the following code in it
+----
+<link rel="import"  href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="j-weather">
+  <template>
+    <style>
+      :host {
+        display: block;
+        font-size: 1.4rem;
+      }
+
+      input {
+        background-color: #ededed;
+        border: 1px solid #b2b2b2;
+        padding: 1px 4px;
+        border-radius: 2px;
+        color: #3c3c3b;
+        font-size: 1.2rem;
+        height: 2rem;
+      }
+
+      h2, h3, ul {
+        margin: 0.5rem 0; 
+      }
+    
+      h2, h3 {
+        color: #2dcd4d;
+      }
+
+      .validationError {
+        font-size: 1rem;
+        color: #e85c41;
+        margin-top: 0.2rem;
+      }
+    
+      ul {
+        list-style: none;
+        padding-left: 0;
+      }
+
+      button {
+        border: 2px solid #2dcd4d;
+        color: #2dcd4d;
+        background-color: #fff;
+        font-size: 1.2rem;
+        height: 2rem;
+        box-sizing: content-box;
+      }
+
+      button:hover {
+        color: #fff;
+        background-color: #2dcd4d;
+      }
+    </style>
+
+    <h2>J-weather</h2>
+    <form id="form">
+
+    </form>
+
+    <h3>Interesting locations</h3>
+  </template>
+
+  <script>  
+    class JWeather extends Polymer.Element {
+      static get is() { return "j-weather"; }
+
+      // configure the owner property
+      static get properties() {
+
+      }
+    };
+    customElements.define(JWeather.is, JWeather);
+  </script>
+
+</dom-module>
+----
+
+==== Navigate to component
+To be able to see our component we change the routing of the default application we created.
+
+Inside my-app.html change at line 99 _<my-view1 name="view1"></my-view1>_ to _<j-weather name="view1"></j-weather>_
+And at line 149 add after the line with _var resolvedPageUrl_
+----
+if(page === 'view1'){resolvedPageUrl=this.resolveUrl('./j-weather/j-weather.html');}
+----
+
+Now you can navigate to http://127.0.0.1:8081/view1 and you will see the basic j-weather component.
 
 == Create an input field
-Create an input field using https://www.webcomponents.org/element/PolymerElements/iron-input[iron-input].
+Create an input field using https://www.webcomponents.org/element/PolymerElements/iron-input[iron-input]. Because we are using Polymer2 the _"is"_ attribute is not available any more. The new way for an iron-input is now:
+----
+<iron-input>
+<input>
+</input>
+</iron-input>
+----
 Now make a property "newLocation" and bind it to this input field using two way databinding.
 To try it out you can show it later in the page using:
-....
+----
 <p>[[newLocation]]</p>
-....
+----
 
 == Make an add button that adds this location to a list of interesting locations
 Add a property "locations" of type Array to your element.
@@ -41,6 +173,43 @@ Display the location in a list. (use dom-repeat)
 Create a subcomponent to show the weather for one city. (weather-for-city)
 For now we'll just show the city name and a static temperature.
 Use this component in the interesting locations list.
+
+For styling you can use:
+----
+<style include="shared-styles">
+  :host {
+    font-size: 0.9rem;
+  }
+  button {
+    border: 2px solid #2dcd4d;
+    color: #2dcd4d;
+    background-color: #fff;
+    font-size: 1.2rem;
+    height: 2rem;
+    box-sizing: content-box;
+  }
+
+  button:hover {
+    color: #fff;
+    background-color: #2dcd4d;
+  }
+  button {
+    font-size: 0.9rem;
+    height: 1.0rem;
+  }
+  .table {
+    display: table;
+    margin-top: 0.4rem;
+  }
+  .cell {
+    display: table-cell;
+    vertical-align: top;
+  }
+  .cell.image {
+    padding-right: 2px;
+  }
+</style>
+----
 
 == Use real weather
 We'll use openweathermap.org
