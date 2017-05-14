@@ -1,0 +1,53 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>j-weather</title>
+
+    <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../bower_components/web-component-tester/browser.js"></script>
+
+    <!-- Import the element to test -->
+    <link rel="import" href="../src/j-weather/j-weather.html">
+  </head>
+  <body>
+    <test-fixture id="jWeather">
+      <template>
+        <j-weather></j-weather>
+      </template>
+    </test-fixture>
+
+    <script>
+      suite('j-weather tests', function() {
+        test('City input component', function(done) {
+          var jWeather = fixture('jWeather');
+          flush(function() {
+            var cities = jWeather.shadowRoot.querySelectorAll('li');
+            //          var cities = Polymer.dom(jWeather.root).querySelectorAll('li');
+            console.log("starting cities " + cities + " count: " + cities.length);
+            var input = jWeather.shadowRoot.querySelector('input');
+            input.setValue("nieuwegein");
+            var submit = jWeather.shadowRoot.querySelector('button');
+            submit.click();
+            console.log("cities 2 " + cities + " count: " + cities.length);
+            cities = jWeather.shadowRoot.querySelectorAll('li');
+            console.log("cities 3 " + cities + " count: " + cities.length);
+            done();
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -164,9 +164,9 @@ To try it out you can show it later in the page using:
 ----
 
 == Make an add button that adds this location to a list of interesting locations
-Add a property "locations" of type Array to your element.
-Make a button and listen to the on-tap event.
-There add the new location to the locations array. (be sure to use the Polymer push method)
+Add a property "locations" of type Array to your element. +
+Make a button and listen to the on-tap event. +
+There add the new location to the locations array. (be sure to use the Polymer push method) +
 Display the location in a list. (use dom-repeat)
 
 == Subcomponent
@@ -212,8 +212,8 @@ For styling you can use:
 ----
 
 == Use real weather
-We'll use openweathermap.org
-You can make a query like this: http://openweathermap.org/data/2.5/weather?q=Nieuwegein&appid=7b9958902d19dac99dd75f203b4275e0
+We'll use openweathermap.org +
+You can make a query like this: http://openweathermap.org/data/2.5/weather?q=Nieuwegein&appid=7b9958902d19dac99dd75f203b4275e0 +
 This appid is for an account I made. It can only handle some amount of calls/time, so you may need to make your own account.
 
 Use iron-ajax to make the api call.
@@ -242,5 +242,5 @@ Now the button styling is duplicate in the files. Extract this and find a way to
 == Bonus 1: Replace the iron-input with paper-input
 The advantage of paper-inputs is that there is a whole api to it. For example the ability to create validations is a lot easier compared to iron-input.
 
-== bonus 2: Add required validation on the input field
+== Bonus 2: Add required validation on the input field
 Now that the input is a paper-input add required validation to it.
