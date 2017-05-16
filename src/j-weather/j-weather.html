@@ -92,7 +92,13 @@ ul {
 	            }
 	        };
 		}
-	      
+
+		ready() {
+			super.ready();
+			console.log("j-weather ready");
+			console.log("locations: " + this.locations);
+		}
+
 		addLocation(e) {
 			e.preventDefault();
 			this._iscityfound = true;

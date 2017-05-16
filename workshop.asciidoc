@@ -237,7 +237,15 @@ Show a message near the input field when the city is not found
 Now the button styling is duplicate in the files. Extract this and find a way to share a piece of styling.
 
 == Testing
+Take this example test and put it in the test directory. Also change the index.html there so it has a reference to this.
+now run it with:
 
+----
+wct -p
+----
+
+It should pass. If not, fix your code. (Or maybe the test if you coded it another way than I predicted)
+Now write some more tests.
 
 == Bonus 1: Replace the iron-input with paper-input
 The advantage of paper-inputs is that there is a whole api to it. For example the ability to create validations is a lot easier compared to iron-input.

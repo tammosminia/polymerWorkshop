@@ -23,27 +23,54 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <link rel="import" href="../src/j-weather/j-weather.html">
   </head>
   <body>
-    <test-fixture id="jWeather">
+    <test-fixture id="groningen">
       <template>
-        <j-weather></j-weather>
+        <j-weather locations=["Groningen"]></j-weather>
+      </template>
+    </test-fixture>
+    <test-fixture id="utrecht">
+      <template>
+        <j-weather locations=["Utrecht","Nieuwegein"]></j-weather>
       </template>
     </test-fixture>
 
     <script>
       suite('j-weather tests', function() {
-        test('City input component', function(done) {
-          var jWeather = fixture('jWeather');
+//        test('Groningen', function(done) {
+//          var jWeather = fixture('jWeather');
+//          flush(function() {
+//            var cities = jWeather.shadowRoot.querySelectorAll('li');
+//            console.log("starting cities " + cities + " count: " + cities.length);
+//            var input = jWeather.shadowRoot.querySelector('input');
+//            input.val = "nieuwegein";
+////            var form = jWeather.$.form;
+////            console.log(form);
+////            form.submit();
+//            var button = jWeather.shadowRoot.querySelector("button");
+//            button.click();
+//            console.log("cities 2 " + cities + " count: " + cities.length);
+//            cities = jWeather.shadowRoot.querySelectorAll('li');
+//            console.log("cities 3 " + cities + " count: " + cities.length);
+//            done();
+//          });
+//        });
+
+        test('groningen', function(done) {
+          var jWeather = fixture('groningen');
           flush(function() {
             var cities = jWeather.shadowRoot.querySelectorAll('li');
-            //          var cities = Polymer.dom(jWeather.root).querySelectorAll('li');
-            console.log("starting cities " + cities + " count: " + cities.length);
-            var input = jWeather.shadowRoot.querySelector('input');
-            input.setValue("nieuwegein");
-            var submit = jWeather.shadowRoot.querySelector('button');
-            submit.click();
-            console.log("cities 2 " + cities + " count: " + cities.length);
-            cities = jWeather.shadowRoot.querySelectorAll('li');
-            console.log("cities 3 " + cities + " count: " + cities.length);
+            assert.equal(cities.length, 1);
+            console.log(cities[0].shadowRoot);
+//            assert(cities[0].innerHTML.indexOf("Groningen") > -1);
+            done();
+          });
+        });
+
+        test('utrecht', function(done) {
+          var jWeather = fixture('utrecht');
+          flush(function() {
+            var cities = jWeather.shadowRoot.querySelectorAll('li');
+            assert.equal(cities.length, 2);
             done();
           });
         });
